@@ -85,9 +85,10 @@ class OoclCsv(object):
                         parsed_record['package_number'] = line[add_id + 7]
                         parsed_record['goods_name_rus'] = line[add_id + 5]
                         parsed_record['consignment'] = line[add_id + 1]
-                        parsed_record['shipper'] = line[add_id + 15]
+                        parsed_record['shipper'] = line[add_id + 11]
                         parsed_record['consignee'] = line[add_id + 12]
                         parsed_record['city'] = line[add_id + 13]
+                        parsed_record['shipper_country'] = line[add_id + 15]
                         record = merge_two_dicts(context, parsed_record)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)

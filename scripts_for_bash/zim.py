@@ -86,11 +86,11 @@ class OoclCsv(object):
                         parsed_record['goods_weight'] = line[add_id + 6]
                         parsed_record['package_number'] = line[add_id + 7]
                         parsed_record['goods_name_rus'] = line[add_id + 8]
+                        parsed_record['consignment'] = line[add_id + 12]
+                        parsed_record['city'] = line[add_id + 13]
                         parsed_record['shipper'] = line[add_id + 9]
                         parsed_record['shipper_country'] = line[add_id + 10]
                         parsed_record['consignee'] = line[add_id + 11]
-                        parsed_record['consignment'] = line[add_id + 12]
-                        parsed_record['city'] = line[add_id + 13]
                         record = merge_two_dicts(context, parsed_record)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)
@@ -102,8 +102,6 @@ class OoclCsv(object):
         return parsed_data
 
 
-# dir_name = 'НУТЭП - ноябрь/ADMIRAL/csv/'
-# input_file_path = 'ADMIRAL SUN от 11.11.21.XLS.csv'
 input_file_path = os.path.abspath(sys.argv[1])
 output_folder = sys.argv[2]
 basename = os.path.basename(input_file_path)

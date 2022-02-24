@@ -25,7 +25,7 @@ def isDigit(x):
         return False
 
 
-def add_data_to_parced(parsed_data, line, context, num1, num2, num3, num4, num5, num6):
+def add_data_to_parced(parsed_data, line, context, num1, num2, num3, num4, num5, num6, num7):
     range_id = line[:2]
     match_id = [isDigit(id) for id in range_id]
     add_id = match_id.index(True)
@@ -41,8 +41,9 @@ def add_data_to_parced(parsed_data, line, context, num1, num2, num3, num4, num5,
             'goods_weight': line[add_id + num2],
             'consignment': line[add_id + num3],
             'shipper': line[add_id + num4],
-            'consignee': line[add_id + num5],
-            'city': line[add_id + num6],
+            'shipper_country': line[add_id + num5],
+            'consignee': line[add_id + num6],
+            'city': line[add_id + num7],
         }
 
         record = merge_two_dicts(context, parsed_record)
@@ -94,11 +95,11 @@ class OoclCsv(object):
                 goods_name_eng = line[8]
             if ir > 8 and bool(str_list):
                 try:
-                    add_data_to_parced(parsed_data, line, context, 9, 10, 11, 13, 15, 16)
+                    add_data_to_parced(parsed_data, line, context, 9, 10, 11, 13, 14, 15, 16)
                 except:
                     if goods_name_eng == "":
                         try:
-                            add_data_to_parced(parsed_data, line, context, 8, 9, 10, 12, 14, 15)
+                            add_data_to_parced(parsed_data, line, context, 8, 9, 10, 12, 13, 14, 15)
                         except:
                             continue
                     continue

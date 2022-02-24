@@ -44,10 +44,6 @@ class OoclCsv(object):
         for ir, line in enumerate(lines):
             logging.info(u'line {} is {}'.format(ir, line))
             str_list = list(filter(bool, line))
-            if ir == 3:
-                logging.info(u"Will parse terminal in value {}...".format(line[10]))
-                context['terminal'] = line[10]
-                logging.info(u"context now is {}".format(context))
             if ir == 5:
                 logging.info(u"Will parse trip in value '{}'...".format(line[7]))
                 context['voyage'] = line[7].strip()
@@ -77,6 +73,7 @@ class OoclCsv(object):
                         parsed_record['goods_name_rus'] = line[add_id + 7]
                         parsed_record['consignment'] = line[add_id + 9]
                         parsed_record['shipper'] = line[add_id + 10]
+                        parsed_record['shipper_country'] = line[add_id + 11]
                         parsed_record['consignee'] = line[add_id + 12]
                         city = [i for i in line[add_id + 12].split(', ')][1:]
                         parsed_record['city'] = " ".join(city)

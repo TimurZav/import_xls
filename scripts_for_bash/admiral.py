@@ -32,7 +32,8 @@ def isDigit(x):
         return False
 
 
-def add_value_to_dict(parsed_record, goods_weight, package_number, name_rus, consignment, city, shipper, consignee,
+def add_value_to_dict(parsed_record, goods_weight, package_number, name_rus, consignment, city, shipper,
+                      shipper_country, consignee,
                       context):
     parsed_record['goods_weight'] = goods_weight
     parsed_record['package_number'] = package_number
@@ -40,6 +41,7 @@ def add_value_to_dict(parsed_record, goods_weight, package_number, name_rus, con
     parsed_record['consignment'] = consignment
     parsed_record['city'] = city
     parsed_record['shipper'] = shipper
+    parsed_record['shipper_country'] = shipper_country
     parsed_record['consignee'] = consignee
     return merge_two_dicts(context, parsed_record)
 
@@ -106,7 +108,7 @@ class OoclCsv(object):
                             last_container_size.append(container_size_and_type[0])
                             last_container_type.append(container_size_and_type[1])
                             record = add_value_to_dict(parsed_record, line[7], line[8], line[9], line[13], line[14],
-                                                       line[11],
+                                                       line[10], line[11],
                                                        line[12],
                                                        context)
                             logging.info(u"record is {}".format(record))
@@ -116,7 +118,7 @@ class OoclCsv(object):
                             parsed_record['container_type'] = last_container_type[-1]
                             parsed_record['container_number'] = last_container_number[-1]
                             record = add_value_to_dict(parsed_record, line[7], line[8], line[9], line[13], line[14],
-                                                       line[11],
+                                                       line[10], line[11],
                                                        line[12], context)
                             logging.info(u"record is {}".format(record))
                             parsed_data.append(record)
