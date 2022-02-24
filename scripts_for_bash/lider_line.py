@@ -1,6 +1,7 @@
 import csv
 import os
 import logging
+import re
 import sys
 import json
 
@@ -90,14 +91,13 @@ class OoclCsv(object):
                 context['date'] = line[2]
                 logging.info(u"context now is {}".format(context))
                 continue
-            if ir == 10:
-                logging.info("Exist goods_name_eng or not {}...".format(line[8]))
-                goods_name_eng = line[8]
             if ir > 8 and bool(str_list):
                 try:
+                    if re.match("английское", line[8]):
+                        goods_name_eng = line[8]
                     add_data_to_parced(parsed_data, line, context, 9, 10, 11, 13, 14, 15, 16)
                 except:
-                    if goods_name_eng == "":
+                    if goods_name_eng is None:
                         try:
                             add_data_to_parced(parsed_data, line, context, 8, 9, 10, 12, 13, 14, 15)
                         except:
