@@ -1,15 +1,10 @@
 import csv
+import datetime
 import os
 import logging
 import re
 import sys
 import json
-
-month_list = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября",
-         "декабря"]
-month_list_upper = [month.upper() for month in month_list]
-month_list_title = [month.title() for month in month_list]
-month_list = month_list_upper + month_list + month_list_title
 
 if not os.path.exists("logging"):
     os.mkdir("logging")
@@ -75,7 +70,8 @@ class OoclCsv(object):
                 continue
             if ir == 8:
                 logging.info("Will parse date in value {}...".format(line[2]))
-                context['date'] = line[2]
+                date = datetime.datetime.strptime(line[2], "%Y-%m-%d")
+                context['date'] = str(date.date())
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir > 8 and bool(str_list):

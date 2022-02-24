@@ -4,12 +4,6 @@ import logging
 import sys
 import json
 
-month_list = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября",
-         "декабря"]
-month_list_upper = [month.upper() for month in month_list]
-month_list_title = [month.title() for month in month_list]
-month_list = month_list_upper + month_list + month_list_title
-
 if not os.path.exists("logging"):
     os.mkdir("logging")
 

@@ -1,4 +1,5 @@
 import csv
+import datetime
 import os
 import logging
 import re
@@ -9,7 +10,7 @@ month_list = ["января", "февраля", "марта", "апреля", "�
          "декабря"]
 month_list_upper = [month.upper() for month in month_list]
 month_list_title = [month.title() for month in month_list]
-month_list = month_list_upper + month_list + month_list_title
+# month_list = month_list_upper + month_list + month_list_title
 
 if not os.path.exists("logging"):
     os.mkdir("logging")
@@ -65,7 +66,8 @@ class OoclCsv(object):
                 if month[1] in month_list_upper:
                     print(month_list_upper.index(month[1]) + 1)
                     month_digit = month_list_upper.index(month[1]) + 1
-                context['date'] = month[0] + '/' + str(month_digit) + '/' + month[2]
+                date = datetime.datetime.strptime(month[2] + '-' + str(month_digit) + '-' + month[0], "%Y-%m-%d")
+                context['date'] = str(date.date())
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir > 8 and bool(str_list):  # Была на 11 итерация

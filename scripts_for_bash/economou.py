@@ -1,4 +1,6 @@
 import csv
+import datetime
+import math
 import os
 import logging
 import sys
@@ -23,6 +25,17 @@ def isDigit(x):
         return True
     except ValueError:
         return False
+
+
+def xldate_to_datetime(xldatetime):
+    tempDate = datetime.datetime(1899, 12, 30)
+    (days, portion) = math.modf(xldatetime)
+    delta_days = datetime.timedelta(days=days)
+    # changing the variable name in the edit
+    secs = int(24 * 60 * 60 * portion)
+    detla_seconds = datetime.timedelta(seconds=secs)
+    TheTime = (tempDate + delta_days + detla_seconds)
+    return TheTime.strftime("%Y-%m-%d")
 
 
 class OoclCsv(object):
@@ -52,7 +65,7 @@ class OoclCsv(object):
                 continue
             if ir == 7:
                 logging.info("Will parse date in value {}...".format(line[2]))
-                context['date'] = line[2]
+                context['date'] = xldate_to_datetime(float(line[2]))
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir > 8 and bool(str_list):

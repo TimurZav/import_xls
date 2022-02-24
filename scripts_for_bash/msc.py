@@ -1,4 +1,5 @@
 import csv
+import datetime
 import os
 import re
 import logging
@@ -85,7 +86,8 @@ class OoclCsv(object):
                 continue
             if ir == 7:
                 logging.info("Will parse date in value {}...".format(line[2]))
-                context['date'] = line[2]
+                date = datetime.datetime.strptime(line[2], "%d.%m.%Y")
+                context['date'] = str(date.date())
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir > 8 and bool(str_list):

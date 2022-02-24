@@ -1,4 +1,5 @@
 import csv
+import datetime
 import os
 import logging
 import re
@@ -9,7 +10,7 @@ month_list = ["января", "февраля", "марта", "апреля", "�
          "декабря"]
 month_list_upper = [month.upper() for month in month_list]
 month_list_title = [month.title() for month in month_list]
-month_list = month_list_upper + month_list + month_list_title
+# month_list = month_list_upper + month_list + month_list_title
 
 if not os.path.exists("logging"):
     os.mkdir("logging")
@@ -67,7 +68,8 @@ class OoclCsv(object):
                     month = line[1].rsplit(':  ', 1)[1].rsplit(' ', 3)
                     if month[1] in month_list:
                         month_digit = month_list.index(month[1]) + 1
-                    context['date'] = month[0] + '/' + str(month_digit) + '/' + month[2]
+                    date = datetime.datetime.strptime(month[2] + '-' + str(month_digit) + '-' + month[0], "%Y-%m-%d")
+                    context['date'] = str(date.date())
                     logging.info(u"context now is {}".format(context))
                     continue
                 except IndexError:

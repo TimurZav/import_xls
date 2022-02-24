@@ -1,15 +1,10 @@
 import csv
+import datetime
 import os
 import logging
 import re
 import sys
 import json
-
-month_list = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября",
-         "декабря"]
-month_list_upper = [month.upper() for month in month_list]
-month_list_title = [month.title() for month in month_list]
-month_list = month_list_upper + month_list + month_list_title
 
 if not os.path.exists("logging"):
     os.mkdir("logging")
@@ -58,7 +53,6 @@ class OoclCsv(object):
         last_container_number = list()
         last_container_size = list()
         last_container_type = list()
-        var_name_ship = "ВЫГРУЗКА ГРУЗА С Т/Х "
         with open(input_file_path, newline='') as csvfile:
             lines = list(csv.reader(csvfile))
 
@@ -72,17 +66,15 @@ class OoclCsv(object):
                 logging.info(u"Will parse ship and trip in value '{}'...".format(line[2]))
                 split_on = u'рейс:'
                 logging.info(u"substring to split on is '{}'".format(split_on))
-                ship_and_voyage_str = line[2].replace(var_name_ship, "")
-                ship_and_voyage_list = re.findall("\d", ship_and_voyage_str)
-                voyage = ''.join(ship_and_voyage_list)
-                context['ship'] = ship_and_voyage_list[0]
-                context['voyage'] = voyage
+                context['ship'] = line[2]
+                context['voyage'] = line[2]
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir == 7:
                 try:
                     logging.info("Will parse date in value {}...".format(line[2]))
-                    context['date'] = line[2]
+                    date = datetime.datetime.strptime(line[2], "%d.%m.%Y")
+                    context['date'] = str(date.date())
                     logging.info(u"context now is {}".format(context))
                     continue
                 except IndexError:
