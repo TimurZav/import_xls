@@ -26,6 +26,36 @@ def isDigit(x):
         return False
 
 
+def max_numbers(s):
+    return max(float(i) for i in s.replace(',', '.').split())
+
+
+def add_data_to_parced(parsed_data, line, context, num1, num2):
+    logging.info(u"Checking if we are on common line with number...")
+    range_id = line[0:2]
+    match_id = [isDigit(id) for id in range_id]
+    add_id = match_id.index(True)
+    line_id = str(float(range_id[add_id]))
+    if isDigit(line_id):
+        logging.info(u"Ok, line looks common...")
+        parsed_record = dict()
+        parsed_record['container_number'] = line[add_id + 1]
+        container_size_and_type = re.findall("\w{2}", line[add_id + 2])
+        parsed_record['container_size'] = int(float(container_size_and_type[0]))
+        parsed_record['container_type'] = container_size_and_type[1]
+        parsed_record['goods_weight'] = max_numbers(line[add_id + 7].replace(' ', ''))
+        parsed_record['package_number'] = int(float(line[add_id + 5]))
+        parsed_record['goods_name_rus'] = line[add_id + 4]
+        parsed_record['consignment'] = line[add_id + 8]
+        parsed_record['shipper'] = line[add_id + num1]
+        parsed_record['shipper_country'] = line[add_id + num2]
+        parsed_record['consignee'] = line[add_id + 9]
+        parsed_record['city'] = line[add_id + 10]
+        record = merge_two_dicts(context, parsed_record)
+        logging.info(u"record is {}".format(record))
+        parsed_data.append(record)
+
+
 class OoclCsv(object):
 
     def __init__(self):
@@ -35,6 +65,8 @@ class OoclCsv(object):
         context = dict(line=os.path.basename(__file__).replace(".py", ""))
         context['terminal'] = "НУТЭП"
         parsed_data = list()
+
+        regime = None
 
         with open(input_file_path, newline='') as csvfile:
             lines = list(csv.reader(csvfile))
@@ -56,32 +88,17 @@ class OoclCsv(object):
                 context['date'] = line[2]
                 logging.info(u"context now is {}".format(context))
                 continue
-            if ir > 8 and bool(str_list):  # Была на 11 итерация
+            if ir > 8 and bool(str_list):
                 try:
-                    logging.info(u"Checking if we are on common line with number...")
-                    range_id = line[0:2]
-                    match_id = [isDigit(id) for id in range_id]
-                    add_id = match_id.index(True)
-                    line_id = str(float(range_id[add_id]))
-                    if isDigit(line_id):
-                        logging.info(u"Ok, line looks common...")
-                        parsed_record = dict()
-                        parsed_record['container_number'] = line[add_id + 1]
-                        container_size_and_type = re.findall("\w{2}", line[add_id + 2])
-                        parsed_record['container_size'] = container_size_and_type[0]
-                        parsed_record['container_type'] = container_size_and_type[1]
-                        parsed_record['goods_weight'] = line[add_id + 7]
-                        parsed_record['package_number'] = line[add_id + 5]
-                        parsed_record['goods_name_rus'] = line[add_id + 4]
-                        parsed_record['consignment'] = line[add_id + 8]
-                        parsed_record['shipper'] = line[add_id + 12]
-                        parsed_record['shipper_country'] = line[add_id + 14]
-                        parsed_record['consignee'] = line[add_id + 9]
-                        parsed_record['city'] = line[add_id + 10]
-                        record = merge_two_dicts(context, parsed_record)
-                        logging.info(u"record is {}".format(record))
-                        parsed_data.append(record)
+                    if re.match("№", line[0]):
+                        regime = line[11]
+                    add_data_to_parced(parsed_data, line, context, 12, 14)
                 except:
+                    if regime != "Режим":
+                        try:
+                            add_data_to_parced(parsed_data, line, context, 11, 13)
+                        except:
+                            continue
                     continue
 
         logging.error(u"About to write parsed_data to output: {}".format(parsed_data))

@@ -66,10 +66,10 @@ class OoclCsv(object):
                         logging.info(u"Ok, line looks common...")
                         parsed_record = dict()
                         parsed_record['container_number'] = line[add_id + 1]
-                        parsed_record['container_size'] = line[add_id + 2]
+                        parsed_record['container_size'] = int(float(line[add_id + 2]))
                         parsed_record['container_type'] = line[add_id + 3]
-                        parsed_record['goods_weight'] = line[add_id + 7]
-                        parsed_record['package_number'] = line[add_id + 5]
+                        parsed_record['goods_weight'] = float(line[add_id + 7])
+                        parsed_record['package_number'] = int(float(line[add_id + 5]))
                         parsed_record['goods_name_rus'] = line[add_id + 6]
                         parsed_record['consignment'] = line[add_id + 8]
                         parsed_record['shipper'] = line[add_id + 9]

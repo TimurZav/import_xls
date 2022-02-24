@@ -35,8 +35,8 @@ def isDigit(x):
 def add_value_to_dict(parsed_record, goods_weight, package_number, name_rus, consignment, shipper, shipper_country,
                       consignee,
                       city, context):
-    parsed_record['goods_weight'] = goods_weight
-    parsed_record['package_number'] = package_number
+    parsed_record['goods_weight'] = float(goods_weight)
+    parsed_record['package_number'] = int(float(package_number))
     parsed_record['goods_name_rus'] = name_rus
     parsed_record['consignment'] = consignment
     parsed_record['shipper'] = shipper
@@ -91,7 +91,7 @@ class OoclCsv(object):
                             line[5])):
                         try:
                             container_size_and_type = re.findall("\w{2}", line[2])
-                            parsed_record['container_size'] = container_size_and_type[0]
+                            parsed_record['container_size'] = int(float(container_size_and_type[0]))
                             parsed_record['container_type'] = container_size_and_type[1]
                             parsed_record['container_number'] = line[1]
                             last_container_number.append(line[1])
@@ -103,7 +103,7 @@ class OoclCsv(object):
                             logging.info(u"record is {}".format(record))
                             parsed_data.append(record)
                         except IndexError:
-                            parsed_record['container_size'] = last_container_size[-1]
+                            parsed_record['container_size'] = int(float(last_container_size[-1]))
                             parsed_record['container_type'] = last_container_type[-1]
                             parsed_record['container_number'] = last_container_number[-1]
                             record = add_value_to_dict(parsed_record, line[7], line[5], line[6], line[9], line[10],

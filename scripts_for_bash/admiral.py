@@ -35,8 +35,8 @@ def isDigit(x):
 def add_value_to_dict(parsed_record, goods_weight, package_number, name_rus, consignment, city, shipper,
                       shipper_country, consignee,
                       context):
-    parsed_record['goods_weight'] = goods_weight
-    parsed_record['package_number'] = package_number
+    parsed_record['goods_weight'] = float(goods_weight)
+    parsed_record['package_number'] = int(float(package_number))
     parsed_record['goods_name_rus'] = name_rus
     parsed_record['consignment'] = consignment
     parsed_record['city'] = city
@@ -101,7 +101,7 @@ class OoclCsv(object):
                     if isDigit(line[1]) or (not line[0] and not line[1] and not line[2] and not line[3]):
                         try:
                             container_size_and_type = re.findall("\w{2}", line[2])
-                            parsed_record['container_size'] = container_size_and_type[0]
+                            parsed_record['container_size'] = int(float(container_size_and_type[0]))
                             parsed_record['container_type'] = container_size_and_type[1]
                             parsed_record['container_number'] = line[3]
                             last_container_number.append(line[3])

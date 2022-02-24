@@ -86,10 +86,10 @@ class OoclCsv(object):
                         parsed_record = dict()
                         parsed_record['container_number'] = line[add_id + 2]
                         container_size_and_type = re.findall("\w{2}", line[add_id + 1])
-                        parsed_record['container_size'] = container_size_and_type[0]
+                        parsed_record['container_size'] = int(float(container_size_and_type[0]))
                         parsed_record['container_type'] = container_size_and_type[1]
-                        parsed_record['goods_weight'] = line[add_id + 6]
-                        parsed_record['package_number'] = line[add_id + 7]
+                        parsed_record['goods_weight'] = float(line[add_id + 6])
+                        parsed_record['package_number'] = int(float(line[add_id + 7]))
                         parsed_record['goods_name_rus'] = line[add_id + 8]
                         parsed_record['consignment'] = line[add_id + 12]
                         parsed_record['city'] = line[add_id + 13]
