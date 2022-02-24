@@ -1,4 +1,5 @@
 import csv
+import datetime
 import os
 import logging
 import re
@@ -26,13 +27,14 @@ def isDigit(x):
         return False
 
 
-def add_data_to_parced(parsed_data, line, context, num1, num2, num3, num4, num5, num6, num7):
+def add_data_to_parced(parsed_data, line, context, num1, num2, num3, num4, num5, num6, num7, num8):
     range_id = line[:2]
     match_id = [isDigit(id) for id in range_id]
     add_id = match_id.index(True)
     line_id = str(float(range_id[add_id]))
     if isDigit(line_id):
         logging.info(u"Ok, line looks common...")
+        date = datetime.datetime.strptime(line[add_id + num4], "%d.%m.%Y")
         parsed_record = {
             'container_number': line[add_id + 1],
             'container_size': int(float(line[add_id + 2])),
@@ -41,10 +43,11 @@ def add_data_to_parced(parsed_data, line, context, num1, num2, num3, num4, num5,
             'package_number': int(float(line[add_id + num1])),
             'goods_weight': float(line[add_id + num2]),
             'consignment': line[add_id + num3],
-            'shipper': line[add_id + num4],
-            'shipper_country': line[add_id + num5],
-            'consignee': line[add_id + num6],
-            'city': line[add_id + num7],
+            'date': str(date.date()),
+            'shipper': line[add_id + num5],
+            'shipper_country': line[add_id + num6],
+            'consignee': line[add_id + num7],
+            'city': line[add_id + num8]
         }
 
         record = merge_two_dicts(context, parsed_record)
@@ -95,11 +98,11 @@ class OoclCsv(object):
                 try:
                     if re.match("английское", line[8]):
                         goods_name_eng = line[8]
-                    add_data_to_parced(parsed_data, line, context, 9, 10, 11, 13, 14, 15, 16)
+                    add_data_to_parced(parsed_data, line, context, 9, 10, 11, 12, 13, 14, 15, 16)
                 except:
                     if goods_name_eng is None:
                         try:
-                            add_data_to_parced(parsed_data, line, context, 8, 9, 10, 12, 13, 14, 15)
+                            add_data_to_parced(parsed_data, line, context, 8, 9, 10, 11, 12, 13, 14, 15)
                         except:
                             continue
                     continue
