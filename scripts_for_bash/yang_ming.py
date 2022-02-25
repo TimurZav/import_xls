@@ -65,7 +65,7 @@ class OoclCsv(object):
             if ir == 6:
                 try:
                     logging.info("Will parse date in value {}...".format(line[1].rsplit(': ', 1)[1]))
-                    month = line[1].rsplit(': ', 1)[1].rsplit(' ', 3)
+                    month = line[1].rsplit(':  ', 1)[1].rsplit(' ', 3)
                     if month[1] in month_list_upper:
                         month_digit = month_list_upper.index(month[1]) + 1
                     date = datetime.datetime.strptime(month[2] + '-' + str(month_digit) + '-' + month[0], "%Y-%m-%d")
