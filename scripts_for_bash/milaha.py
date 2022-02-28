@@ -72,8 +72,8 @@ class OoclCsv(object):
                     context['date'] = str(date.date())
                     logging.info(u"context now is {}".format(context))
                     continue
-                except IndexError:
-                    context['date'] = ""
+                except:
+                    context['date'] = "1970-01-01"
                     continue
             if ir > 8 and bool(str_list):
                 try:

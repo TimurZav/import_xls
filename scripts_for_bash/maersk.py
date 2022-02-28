@@ -58,7 +58,7 @@ class OoclCsv(object):
                     if true_line == (True, False, False, False, True, False):
                         logging.info(u"Checking if we are on common line with number...")
                         date = datetime.datetime.strptime(line[0].rsplit(' ')[0], "%d-%B-%Y")
-                        context['date'] = str(date.date())
+                        context['date'] = str(date.date()) if str(date.date()) else "1970-01-01"
                     elif true_line == (True, True, True, False, True, False):
                         logging.info(u"Ok, line looks common...")
                         parsed_record['shipper'] = line[1]

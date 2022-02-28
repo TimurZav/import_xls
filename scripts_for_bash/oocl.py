@@ -66,8 +66,9 @@ class OoclCsv(object):
                 logging.info(u"Will parse ship and trip in value '{}'...".format(line[2]))
                 split_on = u'рейс:'
                 logging.info(u"substring to split on is '{}'".format(split_on))
-                context['ship'] = line[2]
-                context['voyage'] = line[2]
+                context['ship'] = line[2].rsplit('  ', 1)[0]
+                voyage = line[2].rsplit('  ', 1)[1]
+                context['voyage'] = voyage.rsplit(': ', 1)[1]
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir == 7:

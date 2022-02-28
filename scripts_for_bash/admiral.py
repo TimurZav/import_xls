@@ -78,14 +78,18 @@ class OoclCsv(object):
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir == 6:
-                logging.info("Will parse date in value {}...".format(line[1].rsplit(': ', 1)[1]))
-                month = line[1].rsplit(':  ', 1)[1].rsplit(' ', 3)
-                if month[1] in month_list:
-                    month_digit = month_list.index(month[1]) + 1
-                date = datetime.datetime.strptime(month[2] + '-' + str(month_digit) + '-' + month[0], "%Y-%m-%d")
-                context['date'] = str(date.date())
-                logging.info(u"context now is {}".format(context))
-                continue
+                try:
+                    logging.info("Will parse date in value {}...".format(line[1].rsplit(': ', 1)[1]))
+                    month = line[1].rsplit(':  ', 1)[1].rsplit(' ', 3)
+                    if month[1] in month_list:
+                        month_digit = month_list.index(month[1]) + 1
+                    date = datetime.datetime.strptime(month[2] + '-' + str(month_digit) + '-' + month[0], "%Y-%m-%d")
+                    context['date'] = str(date.date())
+                    logging.info(u"context now is {}".format(context))
+                    continue
+                except:
+                    context['date'] = "1970-01-01"
+                    continue
             if ir == 7:
                 logging.info(u"Will parse terminal in value {}...".format(line[1]))
                 context['terminal'] = line[1].rsplit(', ', 1)[1]

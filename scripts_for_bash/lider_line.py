@@ -91,7 +91,7 @@ class OoclCsv(object):
                 continue
             if ir == 7:
                 logging.info("Will parse date in value {}...".format(line[2]))
-                context['date'] = line[2]
+                context['date'] = line[2] if line[2] else "1970-01-01"
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir > 8 and bool(str_list):

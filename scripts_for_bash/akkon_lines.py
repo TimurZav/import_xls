@@ -61,15 +61,19 @@ class OoclCsv(object):
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir == 5:
-                logging.info("Will parse date in value {}...".format(line[0].rsplit(': ', 1)[1]))
-                month = line[0].rsplit(': ', 1)[1].rsplit(' ', 3)
-                if month[1] in month_list_upper:
-                    print(month_list_upper.index(month[1]) + 1)
-                    month_digit = month_list_upper.index(month[1]) + 1
-                date = datetime.datetime.strptime(month[2] + '-' + str(month_digit) + '-' + month[0], "%Y-%m-%d")
-                context['date'] = str(date.date())
-                logging.info(u"context now is {}".format(context))
-                continue
+                try:
+                    logging.info("Will parse date in value {}...".format(line[0].rsplit(': ', 1)[1]))
+                    month = line[0].rsplit(': ', 1)[1].rsplit(' ', 3)
+                    if month[1] in month_list_upper:
+                        print(month_list_upper.index(month[1]) + 1)
+                        month_digit = month_list_upper.index(month[1]) + 1
+                    date = datetime.datetime.strptime(month[2] + '-' + str(month_digit) + '-' + month[0], "%Y-%m-%d")
+                    context['date'] = str(date.date())
+                    logging.info(u"context now is {}".format(context))
+                    continue
+                except:
+                    context['date'] = "1970-01-01"
+                    continue
             if ir > 8 and bool(str_list):  # Была на 11 итерация
                 try:
                     logging.info(u"Checking if we are on common line with number...")
