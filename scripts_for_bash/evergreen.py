@@ -72,6 +72,7 @@ class OoclCsv(object):
                         parsed_record['goods_weight'] = float(line[add_id + 8])
                         parsed_record['package_number'] = int(float(line[add_id + 5]))
                         parsed_record['goods_name_rus'] = line[add_id + 6]
+                        parsed_record['goods_tnved'] = line[add_id + 7] if line[add_id + 7] else None
                         parsed_record['consignment'] = line[add_id + 10]
                         parsed_record['shipper'] = line[add_id + 12]
                         parsed_record['shipper_country'] = line[add_id + 13]
