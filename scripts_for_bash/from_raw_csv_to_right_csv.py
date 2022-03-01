@@ -48,7 +48,7 @@ class OoclCsv(object):
 
     def process(self, input_file_path):
         context = dict(line="lider_line")
-        context["терминал"] = "НУТЭП"
+        context["terminal"] = "НУТЭП"
         parsed_data = list()
         last_container_number = list()
         last_container_size = list()
