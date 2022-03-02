@@ -77,7 +77,7 @@ class OoclCsv(object):
                         parsed_record['shipper'] = line[add_id + 12]
                         parsed_record['shipper_country'] = line[add_id + 13]
                         parsed_record['consignee'] = line[add_id + 14]
-                        city = [i for i in line[add_id + 14].split(', ')][1:]
+                        city = [i for i in line[add_id + 14].split(', ')][1:] if line[add_id + 14] != '*' else '*'
                         parsed_record['city'] = " ".join(city)
                         record = merge_two_dicts(context, parsed_record)
                         logging.info(u"record is {}".format(record))
@@ -87,6 +87,7 @@ class OoclCsv(object):
 
         logging.error(u"About to write parsed_data to output: {}".format(parsed_data))
         return parsed_data
+
 
 # dir_name = 'НУТЭП - ноябрь/Economou/csv/'
 # input_file_path = 'Копия уведомление о прибытии JONATHAN P 2144N  - HL.xls.csv'
@@ -98,6 +99,22 @@ print("output_file_path is {}".format(output_file_path))
 
 
 parsed_data = OoclCsv().process(input_file_path)
+parsed_data_2 = list()
+context = dict()
+list_last_value = dict()
+for line in parsed_data:
+    keys_list = list(line.keys())
+    values_list = list(line.values())
+    parsed_record = dict()
+    for key, value in zip(keys_list, values_list):
+        if value == '*':
+            context[key] = list_last_value[key]
+        else:
+            parsed_record[key] = value
+        record = merge_two_dicts(context, parsed_record)
+        if value != '*':
+            list_last_value[key] = value
 
+    parsed_data_2.append(record)
 with open(output_file_path, 'w', encoding='utf-8') as f:
-    json.dump(parsed_data, f, ensure_ascii=False, indent=4)
+    json.dump(parsed_data_2, f, ensure_ascii=False, indent=4)
