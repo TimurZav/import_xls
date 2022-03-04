@@ -48,7 +48,7 @@ class OoclCsv(object):
 
     def process(self, input_file_path):
         context = dict(line=os.path.basename(__file__).replace(".py", ""))
-        context['terminal'] = "НУТЭП"
+        context['terminal'] = os.environ.get('XL_IMPORT_TERMINAL')
         parsed_data = list()
         last_container_number = list()
         last_container_size = list()

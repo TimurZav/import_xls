@@ -54,6 +54,7 @@ class OoclCsv(object):
 
     def process(self, input_file_path):
         context = dict(line=os.path.basename(__file__).replace(".py", ""))
+        context['terminal'] = os.environ.get('XL_IMPORT_TERMINAL')
         parsed_data = list()
         last_container_number = list()
         last_container_size = list()
@@ -90,12 +91,6 @@ class OoclCsv(object):
                 except:
                     context['date'] = "1970-01-01"
                     continue
-            if ir == 7:
-                logging.info(u"Will parse terminal in value {}...".format(line[1]))
-                context['terminal'] = line[1].rsplit(', ', 1)[1]
-
-                logging.info(u"context now is {}".format(context))
-                continue
             if ir > 11 and bool(str_list):
                 try:
                     logging.info(u"Checking if we are on common line with number...")
