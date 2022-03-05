@@ -33,25 +33,24 @@ def max_numbers(s):
 
 def add_data_to_parced(parsed_data, line, context, num1, num2):
     logging.info(u"Checking if we are on common line with number...")
-    range_id = line[0:2]
+    range_id = line[:2]
     match_id = [isDigit(id) for id in range_id]
     add_id = match_id.index(True)
     line_id = str(float(range_id[add_id]))
     if isDigit(line_id):
         logging.info(u"Ok, line looks common...")
-        parsed_record = dict()
-        parsed_record['container_number'] = line[add_id + 1]
-        container_size_and_type = re.findall("\w{2}", line[add_id + 2])
+        parsed_record = {'container_number': line[add_id + 1].strip()}
+        container_size_and_type = re.findall("\w{2}", line[add_id + 2].strip())
         parsed_record['container_size'] = int(float(container_size_and_type[0]))
         parsed_record['container_type'] = container_size_and_type[1]
         parsed_record['goods_weight'] = max_numbers(line[add_id + 7].replace(' ', ''))
         parsed_record['package_number'] = int(float(line[add_id + 5]))
-        parsed_record['goods_name_rus'] = line[add_id + 4]
-        parsed_record['consignment'] = line[add_id + 8]
-        parsed_record['shipper'] = line[add_id + num1]
-        parsed_record['shipper_country'] = line[add_id + num2]
-        parsed_record['consignee'] = line[add_id + 9]
-        parsed_record['city'] = line[add_id + 10]
+        parsed_record['goods_name_rus'] = line[add_id + 4].strip()
+        parsed_record['consignment'] = line[add_id + 8].strip()
+        parsed_record['shipper'] = line[add_id + num1].strip()
+        parsed_record['shipper_country'] = line[add_id + num2].strip()
+        parsed_record['consignee'] = line[add_id + 9].strip()
+        parsed_record['city'] = line[add_id + 10].strip()
         record = merge_two_dicts(context, parsed_record)
         logging.info(u"record is {}".format(record))
         parsed_data.append(record)

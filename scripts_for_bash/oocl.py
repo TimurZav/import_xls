@@ -37,7 +37,7 @@ def add_value_to_dict(parsed_record, goods_weight, package_number, name_rus, con
     parsed_record['shipper'] = shipper
     parsed_record['shipper_country'] = shipper_country
     parsed_record['consignee'] = consignee
-    parsed_record['city'] = " ".join(city)
+    parsed_record['city'] = " ".join(city).strip()
     return merge_two_dicts(context, parsed_record)
 
 
@@ -93,16 +93,17 @@ class OoclCsv(object):
                     logging.info(u"Ok, line looks common...")
                     parsed_record = dict()
                     if isDigit(line[0]):
-                        parsed_record['container_number'] = line[1]
+                        parsed_record['container_number'] = line[1].strip()
                         parsed_record['container_size'] = int(float(line[2]))
-                        parsed_record['container_type'] = line[3]
-                        last_container_number.append(line[1])
-                        last_container_size.append(line[2])
-                        last_container_type.append(line[3])
+                        parsed_record['container_type'] = line[3].strip()
+                        last_container_number.append(line[1].strip())
+                        last_container_size.append(line[2].strip())
+                        last_container_type.append(line[3].strip())
                         city = [i for i in line[12].split(', ')][1:]
-                        record = add_value_to_dict(parsed_record, line[8], line[5], line[6], line[9], line[10],
-                                                   line[11],
-                                                   line[12], city, context)
+                        record = add_value_to_dict(parsed_record, line[8], line[5], line[6].strip(), line[9].strip(),
+                                                   line[10].strip(),
+                                                   line[11].strip(),
+                                                   line[12].strip(), city, context)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)
                     elif not line[0] and not line[1] and not line[2] and not line[3]:
@@ -110,9 +111,10 @@ class OoclCsv(object):
                         parsed_record['container_type'] = last_container_type[-1]
                         parsed_record['container_number'] = last_container_number[-1]
                         city = [i for i in line[12].split(', ')][1:]
-                        record = add_value_to_dict(parsed_record, line[8], line[5], line[6], line[9], line[10],
-                                                   line[11],
-                                                   line[12], city, context)
+                        record = add_value_to_dict(parsed_record, line[8], line[5], line[6].strip(), line[9].strip(),
+                                                   line[10].strip(),
+                                                   line[11].strip(),
+                                                   line[12].strip(), city, context)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)
                 except Exception as ex:

@@ -67,19 +67,19 @@ class OoclCsv(object):
                     if isDigit(line_id):
                         logging.info(u"Ok, line looks common...")
                         parsed_record = dict()
-                        parsed_record['container_number'] = line[add_id + 1]
+                        parsed_record['container_number'] = line[add_id + 1].strip()
                         parsed_record['container_size'] = int(float(line[add_id + 2]))
-                        parsed_record['container_type'] = line[add_id + 3]
+                        parsed_record['container_type'] = line[add_id + 3].strip()
                         parsed_record['goods_weight'] = float(line[add_id + 8])
                         parsed_record['package_number'] = int(float(line[add_id + 5]))
-                        parsed_record['goods_name_rus'] = line[add_id + 6]
-                        parsed_record['goods_tnved'] = line[add_id + 7] if line[add_id + 7] else None
-                        parsed_record['consignment'] = line[add_id + 10]
-                        parsed_record['shipper'] = line[add_id + 12]
-                        parsed_record['shipper_country'] = line[add_id + 13]
-                        parsed_record['consignee'] = line[add_id + 14]
+                        parsed_record['goods_name_rus'] = line[add_id + 6].strip()
+                        parsed_record['goods_tnved'] = int(line[add_id + 7]) if line[add_id + 7] else None
+                        parsed_record['consignment'] = line[add_id + 10].strip()
+                        parsed_record['shipper'] = line[add_id + 12].strip()
+                        parsed_record['shipper_country'] = line[add_id + 13].strip()
+                        parsed_record['consignee'] = line[add_id + 14].strip()
                         city = [i for i in line[add_id + 14].split(', ')][1:] if line[add_id + 14] != '*' else '*'
-                        parsed_record['city'] = " ".join(city)
+                        parsed_record['city'] = " ".join(city).strip()
                         record = merge_two_dicts(context, parsed_record)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)

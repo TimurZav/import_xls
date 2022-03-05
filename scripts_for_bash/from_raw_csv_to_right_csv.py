@@ -89,16 +89,20 @@ class OoclCsv(object):
                         last_container_number.append(line[1])
                         last_container_size.append(line[2])
                         last_container_type.append(line[3])
-                        record = add_value_to_dict(parsed_record, line[10], line[9], line[7], line[11], line[12], line[13],
-                                                   line[14], line[15], line[16], context)
+                        record = add_value_to_dict(parsed_record, line[10], line[9], line[7].strip(), line[11].strip(),
+                                                   line[12],
+                                                   line[13].strip(),
+                                                   line[14].strip(), line[15].strip(), line[16].strip(), context)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)
                     elif not line[0] and not line[1] and not line[2] and not line[3]:
                         parsed_record['container_size'] = int(float(last_container_size[-1]))
                         parsed_record['container_type'] = last_container_type[-1]
                         parsed_record['container_number'] = last_container_number[-1]
-                        record = add_value_to_dict(parsed_record, line[10], line[9], line[7], line[11], line[12], line[13],
-                                                   line[14], line[15], line[16], context)
+                        record = add_value_to_dict(parsed_record, line[10], line[9], line[7].strip(), line[11].strip(),
+                                                   line[12],
+                                                   line[13].strip(),
+                                                   line[14].strip(), line[15].strip(), line[16].strip(), context)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)
                 except Exception as ex:

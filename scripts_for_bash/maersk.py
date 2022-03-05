@@ -50,8 +50,8 @@ class OoclCsv(object):
             true_line = bool(line[0]), bool(line[1]), bool(line[2]), bool(line[3]), bool(line[5]), bool(line[8])
             if ir == 1:
                 logging.info(u"Will parse ship and trip in value '{}'...".format(line[1], line[3]))
-                context['ship'] = line[1]
-                context['voyage'] = line[3]
+                context['ship'] = line[1].strip()
+                context['voyage'] = line[3].strip()
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir > 1 and bool(str_list):
@@ -62,24 +62,24 @@ class OoclCsv(object):
                         context['date'] = str(date.date()) if str(date.date()) else "1970-01-01"
                     elif true_line == (True, True, True, False, True, False):
                         logging.info(u"Ok, line looks common...")
-                        parsed_record['shipper'] = line[1]
+                        parsed_record['shipper'] = line[1].strip()
                         city = [i for i in line[2].split(', ')][1:]
-                        parsed_record['city'] = " ".join(city)
+                        parsed_record['city'] = " ".join(city).strip()
                     elif true_line == (False, False, True, True, True, False) or true_line == (False, False, False, True,
                                                                                         True, False):
-                        parsed_record['consignee'] = line[2]
-                        parsed_record['container_number'] = line[3]
-                        container_size_and_type = re.findall("\w{2}", line[5])
+                        parsed_record['consignee'] = line[2].strip()
+                        parsed_record['container_number'] = line[3].strip()
+                        container_size_and_type = re.findall("\w{2}", line[5].strip())
                         parsed_record['container_size'] = int(float(container_size_and_type[0]))
                         parsed_record['container_type'] = container_size_and_type[1]
                         parsed_record['goods_weight'] = float(line[10])
-                        parsed_record['package_number'] = line[11]
+                        parsed_record['package_number'] = line[11].strip()
 
                         record = merge_two_dicts(context, parsed_record)
                         logging.info(u"record is {}".format(record))
                         parsed_data.append(record)
                     elif true_line == (True, False, False, False, False, False):
-                        context['goods_name_rus'] = line[0]
+                        context['goods_name_rus'] = line[0].strip()
 
                         record = merge_two_dicts(context, parsed_record)
                         logging.info(u"record is {}".format(record))

@@ -36,18 +36,18 @@ def add_data_to_parced(parsed_data, line, context, num1, num2, num3, num4, num5,
         logging.info(u"Ok, line looks common...")
         date = datetime.datetime.strptime(line[add_id + num4], "%d.%m.%Y")
         parsed_record = {
-            'container_number': line[add_id + 1],
+            'container_number': line[add_id + 1].strip(),
             'container_size': int(float(line[add_id + 2])),
-            'container_type': line[add_id + 3],
-            'goods_name_rus': line[add_id + 7],
+            'container_type': line[add_id + 3].strip(),
+            'goods_name_rus': line[add_id + 7].strip(),
             'package_number': int(float(line[add_id + num1])),
             'goods_weight': float(line[add_id + num2]),
-            'consignment': line[add_id + num3],
+            'consignment': line[add_id + num3].strip(),
             'date': str(date.date()),
-            'shipper': line[add_id + num5],
-            'shipper_country': line[add_id + num6],
-            'consignee': line[add_id + num7],
-            'city': line[add_id + num8]
+            'shipper': line[add_id + num5].strip(),
+            'shipper_country': line[add_id + num6].strip(),
+            'consignee': line[add_id + num7].strip(),
+            'city': line[add_id + num8].strip()
         }
 
         record = merge_two_dicts(context, parsed_record)
@@ -98,7 +98,7 @@ class OoclCsv(object):
             if ir > 8 and bool(str_list):
                 try:
                     if re.match("английское", line[8]):
-                        goods_name_eng = line[8]
+                        goods_name_eng = line[8].strip()
                     add_data_to_parced(parsed_data, line, context, 9, 10, 11, 12, 13, 14, 15, 16)
                 except:
                     if goods_name_eng is None:

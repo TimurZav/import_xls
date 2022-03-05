@@ -105,19 +105,21 @@ class OoclCsv(object):
                             last_container_number.append(line[3])
                             last_container_size.append(container_size_and_type[0])
                             last_container_type.append(container_size_and_type[1])
-                            record = add_value_to_dict(parsed_record, line[7], line[8], line[9], line[13], line[14],
-                                                       line[10], line[11],
-                                                       line[12],
-                                                       context)
+                            record = add_value_to_dict(parsed_record, line[7], line[8], line[9].strip(),
+                                                       line[13].strip(),
+                                                       line[14].strip(),
+                                                       line[10].strip(), line[11].strip(),
+                                                       line[12].strip(), context)
                             logging.info(u"record is {}".format(record))
                             parsed_data.append(record)
                         except IndexError:
                             parsed_record['container_size'] = last_container_size[-1]
                             parsed_record['container_type'] = last_container_type[-1]
-                            parsed_record['container_number'] = last_container_number[-1]
-                            record = add_value_to_dict(parsed_record, line[7], line[8], line[9], line[13], line[14],
-                                                       line[10], line[11],
-                                                       line[12], context)
+                            record = add_value_to_dict(parsed_record, line[7], line[8], line[9].strip(),
+                                                       line[13].strip(),
+                                                       line[14].strip(),
+                                                       line[10].strip(), line[11].strip(),
+                                                       line[12].strip(), context)
                             logging.info(u"record is {}".format(record))
                             parsed_data.append(record)
                 except Exception as ex:

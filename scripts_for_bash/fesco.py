@@ -65,8 +65,8 @@ class OoclCsv(object):
             str_list = list(filter(bool, line))
             if ir == 4:
                 logging.info(u"Will parse ship and trip in value '{}'...".format(line[2], line[4]))
-                context['ship'] = line[2]
-                context['voyage'] = line[4]
+                context['ship'] = line[2].strip()
+                context['voyage'] = line[4].strip()
                 logging.info(u"context now is {}".format(context))
                 continue
             if ir == 8:
@@ -87,25 +87,29 @@ class OoclCsv(object):
                     if isDigit(line[0]) or (not line[0] and not line[1] and not line[2] and not line[3] and isDigit(
                             line[5])):
                         try:
-                            container_size_and_type = re.findall("\w{2}", line[2])
+                            container_size_and_type = re.findall("\w{2}", line[2].strip())
                             parsed_record['container_size'] = int(float(container_size_and_type[0]))
                             parsed_record['container_type'] = container_size_and_type[1]
-                            parsed_record['container_number'] = line[1]
-                            last_container_number.append(line[1])
+                            parsed_record['container_number'] = line[1].strip()
+                            last_container_number.append(line[1].strip())
                             last_container_size.append(container_size_and_type[0])
                             last_container_type.append(container_size_and_type[1])
-                            record = add_value_to_dict(parsed_record, line[7], line[5], line[6], line[9], line[10],
-                                                       line[11],
-                                                       line[12], line[13], context)
+                            record = add_value_to_dict(parsed_record, line[7], line[5], line[6].strip(),
+                                                       line[9].strip(),
+                                                       line[10].strip(),
+                                                       line[11].strip(),
+                                                       line[12].strip(), line[13].strip(), context)
                             logging.info(u"record is {}".format(record))
                             parsed_data.append(record)
                         except IndexError:
                             parsed_record['container_size'] = int(float(last_container_size[-1]))
                             parsed_record['container_type'] = last_container_type[-1]
                             parsed_record['container_number'] = last_container_number[-1]
-                            record = add_value_to_dict(parsed_record, line[7], line[5], line[6], line[9], line[10],
-                                                       line[11],
-                                                       line[12], line[13], context)
+                            record = add_value_to_dict(parsed_record, line[7], line[5], line[6].strip(),
+                                                       line[9].strip(),
+                                                       line[10].strip(),
+                                                       line[11].strip(),
+                                                       line[12].strip(), line[13].strip(), context)
                             logging.info(u"record is {}".format(record))
                             parsed_data.append(record)
                 except Exception as ex:
