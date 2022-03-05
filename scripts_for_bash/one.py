@@ -90,7 +90,7 @@ class OoclCsv(object):
                         container_size_and_type = re.findall("\w{2}", line[add_id + 1].strip())
                         parsed_record['container_size'] = int(float(container_size_and_type[0]))
                         parsed_record['container_type'] = container_size_and_type[1]
-                        parsed_record['goods_weight'] = float(line[add_id + 6])
+                        parsed_record['goods_weight'] = float(line[add_id + 6]) if line[add_id + 6] else None
                         parsed_record['package_number'] = int(float(line[add_id + 7]))
                         parsed_record['goods_name_rus'] = line[add_id + 8].strip()
                         parsed_record['consignment'] = line[add_id + 12].strip()

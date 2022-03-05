@@ -73,7 +73,7 @@ class OoclCsv(object):
                         container_size_and_type = re.findall("\w{2}", line[5].strip())
                         parsed_record['container_size'] = int(float(container_size_and_type[0]))
                         parsed_record['container_type'] = container_size_and_type[1]
-                        parsed_record['goods_weight'] = float(line[10])
+                        parsed_record['goods_weight'] = float(line[10]) if line[10] else None
                         parsed_record['package_number'] = line[11].strip()
 
                         record = merge_two_dicts(context, parsed_record)
