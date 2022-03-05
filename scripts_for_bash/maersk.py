@@ -62,12 +62,13 @@ class OoclCsv(object):
                         context['date'] = str(date.date()) if str(date.date()) else "1970-01-01"
                     elif true_line == (True, True, True, False, True, False):
                         logging.info(u"Ok, line looks common...")
+                        context['consignment'] = line[0].strip()
                         parsed_record['shipper'] = line[1].strip()
+                        context['consignee'] = line[2].strip()
                         city = [i for i in line[2].split(', ')][1:]
                         parsed_record['city'] = " ".join(city).strip()
                     elif true_line == (False, False, True, True, True, False) or true_line == (False, False, False, True,
                                                                                         True, False):
-                        parsed_record['consignee'] = line[2].strip()
                         parsed_record['container_number'] = line[3].strip()
                         container_size_and_type = re.findall("\w{2}", line[5].strip())
                         parsed_record['container_size'] = int(float(container_size_and_type[0]))
@@ -105,6 +106,9 @@ print("output_file_path is {}".format(output_file_path))
 
 
 parsed_data = OoclCsv().process(input_file_path)
-
+parsed_data_2 = list()
 with open(output_file_path, 'w', encoding='utf-8') as f:
-    json.dump(parsed_data, f, ensure_ascii=False, indent=4)
+    for ir, row in enumerate(parsed_data):
+        if row['goods_name_rus']:
+            parsed_data_2.append(row)
+    json.dump(parsed_data_2, f, ensure_ascii=False, indent=4)
