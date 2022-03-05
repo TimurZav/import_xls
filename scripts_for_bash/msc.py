@@ -65,6 +65,7 @@ class OoclCsv(object):
     def process(self, input_file_path):
         context = dict(line=os.path.basename(__file__).replace(".py", ""))
         context['terminal'] = os.environ.get('XL_IMPORT_TERMINAL')
+        context['parsed_on'] = str(datetime.datetime.now().date())
         parsed_data = list()
 
         regime = None
